@@ -16,7 +16,11 @@ module NewRelic
 
       def send_request(data)
         begin
-          PlatformLogger.debug("JSON payload: #{data}")
+          if data.length < 1024
+            PlatformLogger.debug("JSON payload: #{data}")
+          else
+            PlatformLogger.debug("JSON payload: #{data[0..1024]}...")
+          end
           uri = URI.parse(url)
           if Config.proxy.nil?
             http = Net::HTTP.new(uri.host, uri.port)

@@ -35,6 +35,8 @@ module NewRelic
           request['X-License-Key'] = @license_key
           request['Content-Encoding'] = 'deflate'
           request.body = Zlib::Deflate.deflate(data)
+          PlatformLogger.debug("Body size: #{data.length}")
+          PlatformLogger.debug("Compressed body size: #{request.body.length}")
           response = http.request(request)
           return evaluate_response(response)
         rescue Timeout::Error => err
